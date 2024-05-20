@@ -44,6 +44,7 @@ class NewsListPage extends StatelessWidget {
       ),
       title: Text(
         article.title,
+        style: Theme.of(context).textTheme.titleMedium,
       ),
       subtitle: Text(article.author),
       onTap: () {
