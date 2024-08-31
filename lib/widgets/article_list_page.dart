@@ -4,10 +4,8 @@ import 'package:dicoding_news_app/platform_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class NewsListPage extends StatelessWidget {
-  static const routeName = '/article_list';
-
-  const NewsListPage({Key? key}) : super(key: key);
+class ArticleListPage extends StatelessWidget {
+  const ArticleListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +28,7 @@ class NewsListPage extends StatelessWidget {
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(
         middle: Text('News App'),
+        transitionBetweenRoutes: false,
       ),
       child: _buildList(context),
     );
@@ -51,25 +50,26 @@ class NewsListPage extends StatelessWidget {
   }
 
   Widget _buildArticleItem(BuildContext context, Article article) {
-    return ListTile(
-      contentPadding:
-          const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      leading: Hero(
-        tag: article.urlToImage,
-        child: Image.network(
-          article.urlToImage,
-          width: 100,
+    return Material(
+      child: ListTile(
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        leading: Hero(
+          tag: article.urlToImage,
+          child: Image.network(
+            article.urlToImage,
+            width: 100,
+          ),
         ),
+        title: Text(
+          article.title,
+        ),
+        subtitle: Text(article.author),
+        onTap: () {
+          Navigator.pushNamed(context, ArticleDetailPage.routeName,
+              arguments: article);
+        },
       ),
-      title: Text(
-        article.title,
-        style: Theme.of(context).textTheme.titleMedium,
-      ),
-      subtitle: Text(article.author),
-      onTap: () {
-        Navigator.pushNamed(context, ArticleDetailPage.routeName,
-            arguments: article);
-      },
     );
   }
 }
