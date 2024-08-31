@@ -23,7 +23,7 @@ class CustomScaffold extends StatelessWidget {
 Widget _buildShortAppBar(BuildContext context) {
   return Card(
     margin: const EdgeInsets.all(0),
-    shape: const BeveledRectangleBorder(
+    shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
         bottomRight: Radius.circular(16.0),
       ),

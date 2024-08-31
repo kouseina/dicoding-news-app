@@ -1,5 +1,7 @@
 import 'package:dicoding_news_app/article.dart';
 import 'package:dicoding_news_app/detail_page.dart';
+import 'package:dicoding_news_app/platform_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NewsListPage extends StatelessWidget {
@@ -9,25 +11,42 @@ class NewsListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return PlatformWidget(
+      androidBuilder: _buildAndroid,
+      iosBuilder: _buildIos,
+    );
+  }
+
+  Widget _buildAndroid(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'News App',
-        ),
+        title: const Text('News App'),
       ),
-      body: FutureBuilder<String>(
-        future:
-            DefaultAssetBundle.of(context).loadString('assets/articles.json'),
-        builder: (context, snapshot) {
-          final List<Article> articles = parseArticles(snapshot.data);
-          return ListView.builder(
-            itemCount: articles.length,
-            itemBuilder: (context, index) {
-              return _buildArticleItem(context, articles[index]);
-            },
-          );
-        },
+      body: _buildList(context),
+    );
+  }
+
+  Widget _buildIos(BuildContext context) {
+    return CupertinoPageScaffold(
+      navigationBar: const CupertinoNavigationBar(
+        middle: Text('News App'),
       ),
+      child: _buildList(context),
+    );
+  }
+
+  FutureBuilder<String> _buildList(BuildContext context) {
+    return FutureBuilder<String>(
+      future: DefaultAssetBundle.of(context).loadString('assets/articles.json'),
+      builder: (context, snapshot) {
+        final List<Article> articles = parseArticles(snapshot.data);
+        return ListView.builder(
+          itemCount: articles.length,
+          itemBuilder: (context, index) {
+            return _buildArticleItem(context, articles[index]);
+          },
+        );
+      },
     );
   }
 
